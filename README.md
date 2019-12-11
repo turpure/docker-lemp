@@ -119,6 +119,15 @@ $db = new PDO(
 );
 ```
 
+You can access PgSQL db via PDO like so:
+```php
+$pdb = new PDO(
+    'pgsql:host=127.0.0.1;port=5432;dbname=' . getenv('PGSQL_DATABASE'),
+    getenv('PGSQL_USER'),
+    getenv('PGSQL_PASSWORD')
+);
+```
+
 ### Nginx
 
 URL rewrite is already enabled for you.
