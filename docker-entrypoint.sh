@@ -36,6 +36,7 @@ if [ ! -f "/run/mysqld/.init" ]; then
   fi
 
   echo "UPDATE mysql.user SET Password=PASSWORD('$MYSQL_ROOT_PASSWORD') WHERE User='root';" >> $SQL
+  echo "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION;" >> $SQL
   echo "DELETE FROM mysql.user WHERE User = '' OR Password = '';" >> $SQL
   echo "FLUSH PRIVILEGES;" >> $SQL
 

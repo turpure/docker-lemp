@@ -6,7 +6,10 @@ ENV \
   ADMINER_VERSION=4.7.5 \
   ES_HOME=/usr/share/java/elasticsearch \
   PATH=/usr/share/java/elasticsearch/bin:$PATH
-
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
+RUN echo -e "192.30.253.112 github.com" > /etc/hosts
+RUN apk update
+# RUN echo -e "http://nl.alpinelinux.org/alpine/v3.10/main\nhttp://nl.alpinelinux.org/alpine/v3.10/community" > /etc/apk/repositories
 RUN \
   # install
   apk add -U --no-cache \
@@ -30,9 +33,16 @@ RUN \
   # adminer
   && mkdir -p /var/www/adminer \
     && curl -sSLo /var/www/adminer/index.php \
-      "https://github.com/vrana/adminer/releases/download/v$ADMINER_VERSION/adminer-$ADMINER_VERSION-en.php" \
+#      "https://github.com/vrana/adminer/releases/download/v$ADMINER_VERSION/adminer-$ADMINER_VERSION-en.php" \
+#      "https://github.com/vrana/adminer/releases/download/v4.7.5/adminer-4.7.5-mysql.php"
+        "https://github.com/vrana/adminer/releases/download/v4.7.5/adminer-4.7.5-en.php" \
   # cleanup
   && rm -rf /var/cache/apk/* /tmp/* /var/tmp/* /usr/share/doc/* /usr/share/man/*
+# mysql config
+RUN echo -e "bind-address=0.0.0.0" >> /etc/my.cnf
+
+
+#RUN echo -e "bind-address=0.0.0.0" > /etc/mysql/my.cnf
 
 # nginx config
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
